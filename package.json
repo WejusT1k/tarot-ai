@@ -1,0 +1,21 @@
+{
+  "name": "tarot-ai",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.5.2",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "type-check": "turbo run type-check"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "turbo": "^2.9.16",
+    "typescript": "^6.0.3"
+  }
+}
