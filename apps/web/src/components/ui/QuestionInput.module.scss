@@ -1,0 +1,71 @@
+@reference "../../app/globals.css";
+
+.form {
+  @apply w-full max-w-xl px-6;
+}
+
+/* Ornamental prompt above the field */
+.prompt {
+  @apply mb-4 flex items-center justify-center gap-3;
+
+  color: color-mix(in srgb, var(--color-ember-soft) 85%, transparent);
+}
+
+.promptLine {
+  @apply h-px w-10;
+
+  &.left {
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--color-ember-soft) 60%, transparent)
+    );
+  }
+
+  &.right {
+    background: linear-gradient(
+      to left,
+      transparent,
+      color-mix(in srgb, var(--color-ember-soft) 60%, transparent)
+    );
+  }
+}
+
+.promptLabel {
+  @apply font-display text-[0.7rem] uppercase tracking-[0.4em];
+}
+
+.fieldWrap {
+  @apply relative;
+}
+
+/* Soft amber glow that intensifies on focus */
+.glow {
+  @apply pointer-events-none absolute -inset-px rounded-full opacity-60 blur-md transition-opacity duration-500;
+
+  background: radial-gradient(60% 140% at 50% 50%, rgba(204, 142, 72, 0.25), transparent 70%);
+
+  .fieldWrap:focus-within & {
+    @apply opacity-100;
+  }
+}
+
+.input {
+  @apply relative w-full rounded-full px-7 py-4 text-center font-sans text-lg outline-none backdrop-blur-sm transition-all duration-500;
+
+  color: var(--color-bone);
+  background: color-mix(in srgb, var(--color-night) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-ember) 35%, transparent);
+  box-shadow: inset 0 1px 20px rgba(0, 0, 0, 0.6);
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-mist) 55%, transparent);
+  }
+
+  &:focus {
+    border-color: color-mix(in srgb, var(--color-ember) 70%, transparent);
+    box-shadow:
+      inset 0 1px 20px rgba(0, 0, 0, 0.6),
+      0 0 30px rgba(204, 142, 72, 0.22);
+  }
+}

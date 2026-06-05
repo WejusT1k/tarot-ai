@@ -2,6 +2,22 @@
 
 > Running log of what we actually did each session. Newest first.
 
+## 2026-06-05 — Phase 1 UI: gloomy fantasy scene + mystical input
+- Built the landing scene with pure CSS: deep gloomy fantasy background (arcane purple haze,
+  warm low glow), heavy vignette, film grain. Fonts: Cinzel (display) + EB Garamond (body, has
+  Cyrillic for future ua).
+- Single mystical `QuestionInput` component (placeholder, focus glow). Wired no-op submit for now.
+- Fixed a focus bug: overlays were painted above the input (stealing clicks + dimming it). Now
+  interactive content sits above overlays; decorative layers are pointer-events-none.
+- Refactored styling: JSX uses semantic class names only; Tailwind utilities live in SCSS modules
+  via @apply (@reference + installed `sass`). Theme must be `@theme static` so palette vars reach
+  the modules — see [[tailwind-scss-setup]] memory.
+- Scene gloom dialed up per user (very dark; only text + (former) table glow out of the pitch).
+- Table exploration: tried velvet (purple), dark wood, stone, and a draped red tablecloth with a
+  skirt + contact shadow. The 3D-ish table read as a "podium" → **table removed**. Cards will be
+  rendered in **2D** in the reserved lower area (Decisions #13). Phase 2 rewritten from 3D→2D.
+- Current landing: gloomy bg + title + single input; lower ~2/3 empty, reserved for 2D cards.
+
 ## 2026-06-05 — Phase 0 done (monorepo skeleton)
 - pnpm chosen as package manager (enabled via corepack). Node 24.
 - Set up Turborepo monorepo manually: root package.json, pnpm-workspace.yaml, turbo.json,

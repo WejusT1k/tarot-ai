@@ -14,6 +14,8 @@
 | 3 | Card images source | **Rider-Waite-Smith (public domain)** — free to use, fast start | 2026-06-05 |
 | 11 | Anonymous readings | **Auth-gated answer (teaser):** guest can type a question and the cards deal, but the AI interpretation is gated behind a login/register modal. The shuffle/deal is the hook; the answer requires auth. | 2026-06-05 |
 | 12 | UI component library | **Radix UI** (primitives) for modal, dropdown, etc., styled to fantasy theme | 2026-06-05 |
+| 13 | Card rendering | **2D cards** (not a 3D table). The CSS/3D table was tried on the landing and read as a podium — removed. Cards will be rendered in 2D and dealt into the empty lower area of the scene. Supersedes the original "3D Card Scene (Three.js)" plan in Phase 2. | 2026-06-05 |
+| 14 | Styling approach | Semantic class names in JSX; Tailwind utilities live in SCSS modules via `@apply` (`@reference` + `@theme static`). Keep JSX clean. | 2026-06-05 |
 
 ## Open
 | # | Decision | Notes |

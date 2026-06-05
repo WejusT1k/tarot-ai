@@ -30,6 +30,9 @@ pnpm-debug.log*
 # prisma
 apps/api/prisma/*.db
 
+# claude code — local personal settings (keep shared .claude/settings.json if added)
+.claude/settings.local.json
+
 # misc
 *.tsbuildinfo
 coverage/

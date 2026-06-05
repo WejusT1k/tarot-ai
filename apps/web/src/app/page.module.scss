@@ -1,0 +1,59 @@
+@reference "./globals.css";
+
+/* Full-bleed gloomy backdrop: arcane haze up top, warm candle glow low-center */
+.scene {
+  @apply relative flex min-h-dvh flex-col items-center overflow-hidden;
+
+  background:
+    radial-gradient(120% 80% at 50% 18%, rgba(91, 58, 122, 0.09) 0%, rgba(14, 10, 26, 0) 48%),
+    radial-gradient(
+      90% 70% at 50% 92%,
+      rgba(200, 134, 46, 0.06) 0%,
+      rgba(200, 134, 46, 0.02) 24%,
+      rgba(7, 6, 13, 0) 54%
+    ),
+    radial-gradient(130% 115% at 50% 48%, var(--color-dusk) 0%, var(--color-night) 46%);
+}
+
+/* ---- Atmospheric overlays (decorative, never intercept clicks) ---- */
+
+.vignette {
+  @apply pointer-events-none absolute inset-0 z-10;
+
+  background: radial-gradient(
+    105% 98% at 50% 46%,
+    transparent 32%,
+    rgba(5, 4, 9, 0.74) 72%,
+    rgba(3, 2, 6, 1) 100%
+  );
+}
+
+.grain {
+  @apply pointer-events-none absolute inset-0 z-20;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.06;
+}
+
+/* ---- Foreground: title + input. Sits ABOVE the overlays so it stays
+        legible and clickable on every screen height. ---- */
+
+.header {
+  @apply absolute inset-x-0 top-[11%] z-30 flex flex-col items-center px-6 text-center;
+}
+
+.eyebrow {
+  @apply font-display text-xs uppercase tracking-[0.5em];
+
+  color: color-mix(in srgb, var(--color-ember-soft) 80%, transparent);
+}
+
+.title {
+  @apply font-display mt-4 mb-10 text-3xl font-semibold tracking-[0.15em] sm:text-4xl;
+
+  color: color-mix(in srgb, var(--color-mist) 75%, transparent);
+  text-shadow: 0 0 25px rgba(91, 58, 122, 0.5);
+}
+
+/* The cards will be rendered here (2D) in a later phase, replacing the old table. */

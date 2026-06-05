@@ -1,28 +1,29 @@
-# Phase 2 — 3D Card Scene (Three.js)
+# Phase 2 — Card Scene (2D)
 
-Goal: the visual centerpiece — cards on a table, shuffle, deal, flip.
+> **Direction changed (2026-06-05):** originally planned as a 3D Three.js table scene.
+> The CSS/3D table was tried on the landing and read as a podium, so the table was removed.
+> Cards will be rendered in **2D** and dealt into the empty lower area of the scene.
+> Three.js is shelved (see Decision #13); revisit only if 2D proves insufficient.
 
-## Tasks
-- [ ] Install `@react-three/fiber`, `@react-three/drei`, `@react-spring/three` (all latest)
-- [ ] `TarotScene.tsx` — R3F Canvas wrapper, top-down camera with slight tilt
-- [ ] `TableSurface.tsx` — PlaneGeometry with dark cloth texture
-- [ ] `TarotCard.tsx` — thin BoxGeometry mesh
-  - [ ] Face texture (card art) + back texture (card back)
-  - [ ] Upright / reversed state
-  - [ ] Flip animation (back → face)
-- [ ] `ShuffleAnimation.tsx` — cards scatter and reassemble
-- [ ] `DealAnimation.tsx` — cards slide to positions one by one (3-card spread)
-- [ ] Integrate scene into `/` and `/reading/[id]`
+Goal: the visual centerpiece — cards dealt into the scene, shuffle, deal, flip — in 2D.
 
-## Open Decisions referenced
-- #4 Low-end mobile fallback (2D fallback? feature-detect WebGL?)
+## Tasks (2D approach)
+- [ ] Card component (2D) — face (card art) + back (card back), flip animation (CSS/Framer Motion)
+- [ ] Upright / reversed state
+- [ ] Shuffle animation — cards scatter and reassemble
+- [ ] Deal animation — cards slide to positions one by one (3-card spread)
+- [ ] Layout the dealt cards in the lower area where the table used to be
+- [ ] Integrate into `/` and `/reading/[id]`
+- [ ] Decide animation lib: CSS-only vs Framer Motion (lean Framer Motion for orchestration)
 
 ## Notes
-- **Card art: Rider-Waite-Smith (public domain).** Source the 78 card images + a card back,
-  use as face/back textures on the card meshes.
-- Drive animations with `@react-spring/three`. Physics (`rapier`) is optional, later.
+- **Card art: Rider-Waite-Smith (public domain).** Source the 78 card images + a card back.
 - Mock the card data here — real randomization comes from backend in Phase 4.
+- The scene already reserves the lower ~2/3 (empty gloom) for the cards.
+
+## Superseded (original 3D plan, kept for reference)
+- ~~R3F Canvas, top-down camera, PlaneGeometry table, BoxGeometry card meshes,
+  @react-three/fiber + drei + @react-spring/three~~ — shelved in favor of 2D.
 
 ## Done when
-- Shuffle → deal → flip plays smoothly for a 3-card spread with placeholder cards.
-- Scene degrades gracefully (or has a fallback) on devices without good WebGL.
+- Shuffle → deal → flip plays smoothly for a 3-card spread with placeholder cards, in 2D.
