@@ -45,4 +45,5 @@ gated behind a login/register modal — the magic is the hook, the answer requir
 - `[!]` — blocked / needs decision
 
 ## Current Focus
-**Phase 1 — Frontend Foundation.** Building the fantasy UI shell first.
+Phase 1 scene + input are done. **Next up: Phase 2 — 2D cards** — build the card component
+(face / back, flip), then shuffle + deal into the reserved lower area of the scene.

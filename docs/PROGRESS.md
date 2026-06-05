@@ -17,6 +17,7 @@
   skirt + contact shadow. The 3D-ish table read as a "podium" → **table removed**. Cards will be
   rendered in **2D** in the reserved lower area (Decisions #13). Phase 2 rewritten from 3D→2D.
 - Current landing: gloomy bg + title + single input; lower ~2/3 empty, reserved for 2D cards.
+- **Next session → Phase 2: 2D cards** — card component (face/back, flip), then shuffle + deal.
 
 ## 2026-06-05 — Phase 0 done (monorepo skeleton)
 - pnpm chosen as package manager (enabled via corepack). Node 24.
