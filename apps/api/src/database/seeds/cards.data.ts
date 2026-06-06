@@ -1,4 +1,4 @@
-import type { Arcana, Card, Suit } from '@tarot-ai/types';
+import type { Card, Suit } from '@tarot-ai/types';
 
 export type SeedCard = Omit<Card, 'id'>;
 
@@ -365,7 +365,7 @@ const cap = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
 function buildMajors(): SeedCard[] {
   return MAJOR.map((m) => ({
     name: m.name,
-    arcana: 'major' as Arcana,
+    arcana: 'major',
     suit: null,
     number: m.number,
     description: m.description,

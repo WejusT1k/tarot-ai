@@ -12,7 +12,7 @@ async function seed(): Promise<void> {
     await repo.upsert(cards, ['id']);
 
     const total = await repo.count();
-    // eslint-disable-next-line no-console
+
     console.log(`Seeded ${cards.length} cards. Deck now has ${total} rows.`);
   } finally {
     await AppDataSource.destroy();
@@ -20,7 +20,6 @@ async function seed(): Promise<void> {
 }
 
 seed().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error('Seed failed:', err);
   process.exit(1);
 });
