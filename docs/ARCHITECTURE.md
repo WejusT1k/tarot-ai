@@ -23,22 +23,27 @@ tarot-ai/                            ← single repository (frontend + backend)
 │   │       ├── i18n/                # locale config, request helpers
 │   │       ├── messages/            # translation catalogs (en.json, ua.json)
 │   │       └── lib/                 # api client, hooks, utils
-│   └── api/                         # NestJS (latest)
+│   └── api/                         # NestJS (latest) — TypeORM + Postgres
 │       └── src/
 │           ├── modules/
-│           │   ├── auth/            # Passport, Google strategy, JWT
-│           │   ├── users/
-│           │   ├── readings/        # create/get/list readings
-│           │   ├── cards/           # read-only, GET only
-│           │   └── ai/              # Claude integration, prompt building
-│           └── prisma/
-│               ├── schema.prisma
-│               └── seed.ts          # seed 78 tarot cards once
+│           │   ├── auth/            # Passport, Google strategy, JWT (later)
+│           │   ├── users/           # (later)
+│           │   ├── readings/        # draw now; create/get/list later
+│           │   ├── cards/           # read-only: Card entity, GET /cards
+│           │   └── ai/              # Claude integration, prompt building (later)
+│           └── database/
+│               ├── data-source.ts   # TypeORM DataSource (shared by app + seed)
+│               └── seeds/           # cards.data.ts (78 cards) + seed.ts runner
 ├── packages/
 │   └── types/                       # shared TS interfaces (Card, Reading, User, Locale)
+├── docker-compose.yml               # Postgres 17 (tarot-postgres)
 ├── turbo.json
 └── package.json
 ```
+
+**ORM/DB:** TypeORM + Postgres (Decision #15/#16). `synchronize: true` in dev; migrations before prod.
+**Card images:** static files in `apps/web/public/cards/` (Decision #17); the DB stores only the
+relative `image_url` path. Fetched from public-domain Wikimedia RWS via `apps/web/scripts/fetch-cards.sh`.
 
 ## Localization (i18n)
 

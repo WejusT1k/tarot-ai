@@ -16,11 +16,16 @@
 | 12 | UI component library | **Radix UI** (primitives) for modal, dropdown, etc., styled to fantasy theme | 2026-06-05 |
 | 13 | Card rendering | **2D cards** (not a 3D table). The CSS/3D table was tried on the landing and read as a podium — removed. Cards will be rendered in 2D and dealt into the empty lower area of the scene. Supersedes the original "3D Card Scene (Three.js)" plan in Phase 2. | 2026-06-05 |
 | 14 | Styling approach | Semantic class names in JSX; Tailwind utilities live in SCSS modules via `@apply` (`@reference` + `@theme static`). Keep JSX clean. | 2026-06-05 |
+| 15 | ORM | **TypeORM** (not Prisma) — native NestJS integration, decorator entities, DI repositories. Supersedes Prisma in the original plan. | 2026-06-06 |
+| 16 | Local database | **Postgres 17 via Docker Compose** (`docker-compose.yml`, service `tarot-postgres`). | 2026-06-06 |
+| 17 | Card image storage | Files live as static assets in **`apps/web/public/cards/`** (served by Next's CDN). The DB stores only the relative path (`image_url`). Backend describes the card incl. its image path; frontend resolves the URL. Swap to object storage later is clean (DB already holds a path). | 2026-06-06 |
+| 18 | Card image format | **JPG** (Wikimedia RWS source is jpg; no webp converter available). Next/Image optimizes on the fly. | 2026-06-06 |
+| 19 | Card draw | Generated on the **backend** — `POST /api/readings/draw` shuffles the seeded deck, picks N distinct cards per spread, assigns random orientation, returns them. | 2026-06-06 |
 
 ## Open
 | # | Decision | Notes |
 |---|----------|-------|
-| 2 | AI streaming transport | SSE vs WebSocket — decide in Phase 4 |
-| 4 | Low-end mobile fallback for Three.js | 2D fallback? feature-detect WebGL? — decide in Phase 2 |
+| 2 | AI streaming transport | SSE vs WebSocket — decide when wiring AI |
 | 5 | Public readings | Anyone with link vs owner-only |
-| 6 | Localized card text | Per-locale card text in DB vs AI translates at interpretation time (leaning AI) |
+| 6 | Localized card text | Per-locale card text in DB vs AI translates at interpretation time (leaning AI). Minor-arcana meanings are currently composed (suit × rank) — refine if shown raw in UI |
+| 20 | DB schema management | Currently `synchronize: true` (dev only). Switch to TypeORM migrations before production |

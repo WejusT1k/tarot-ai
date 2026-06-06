@@ -2,6 +2,25 @@
 
 > Running log of what we actually did each session. Newest first.
 
+## 2026-06-06 — Backend: cards + draw (Phase 4 core started)
+- DB: Postgres 17 via Docker Compose (`docker-compose.yml`, service `tarot-postgres`, volume `tarot-pgdata`).
+- ORM: **TypeORM** chosen over Prisma (native NestJS, decorator entities). Installed @nestjs/typeorm,
+  typeorm 1.0, pg, @nestjs/config, dotenv.
+- TypeORM wiring: `src/database/data-source.ts` (shared by app + seed), `synchronize: true` in dev
+  (switch to migrations before prod — Decision #20). Card `id` is a manual 1–78 PK.
+- `Card` entity (id, name, arcana enum, suit enum nullable, number, description, upright/reversed
+  meaning, keywords text[], image_url). Implements shared `Card` type.
+- `CardsModule`: GET /api/cards, GET /api/cards/:id.
+- `ReadingsModule`: POST /api/readings/draw — shuffles deck, draws N distinct cards per spread
+  (single / three_card / celtic_cross), assigns random orientation. No question/AI/persistence yet.
+- Swagger/OpenAPI at `/docs` (`@nestjs/swagger`); Card entity + DrawDto + ReadingCardDto documented.
+- Seed: 78 cards (`src/database/seeds/`). Majors hand-written; minors composed from suit × rank
+  archetypes. `pnpm seed` (idempotent upsert by id). Verified endpoints return correct data.
+- Card images: store files in `apps/web/public/cards/`, DB holds the relative path (Decision #17),
+  format jpg (#18). Fetch script `apps/web/scripts/fetch-cards.sh` pulls the public-domain RWS deck
+  from Wikimedia. 68/78 down; 11 hit Wikimedia's 429 rate limit — re-runnable script finishes them.
+- Next: finish image fetch; then wire the frontend to the draw endpoint (Phase 5) or add auth/AI.
+
 ## 2026-06-05 — Phase 1 UI: gloomy fantasy scene + mystical input
 - Built the landing scene with pure CSS: deep gloomy fantasy background (arcane purple haze,
   warm low glow), heavy vignette, film grain. Fonts: Cinzel (display) + EB Garamond (body, has
