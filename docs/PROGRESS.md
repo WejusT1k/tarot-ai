@@ -2,6 +2,26 @@
 
 > Running log of what we actually did each session. Newest first.
 
+## 2026-06-06 — Phase 2 (2D cards): TarotCard component + flip + deal
+- `TarotCard` (`apps/web/src/components/cards/`): presentational 2D card. Classic tarot ratio,
+  ornate gold/velvet frame, RWS art via `next/image` (fill). Major arcana shows its number on the
+  nameplate; minors don't.
+- Reversed state: artwork rotates 180°, nameplate stays upright with a "Reversed" label.
+- 3D flip (CSS-only, no Framer Motion): `.card` holds the `perspective`, `.flipper` is
+  `preserve-3d` + `rotateY`, two `backface-visibility: hidden` faces. Back = the deck's "сорочка"
+  drawn in pure CSS (velvet field, gold rim, diamond filigree, conic-gradient occult emblem).
+- Deal-in entrance: each card slides/rotates up with a per-card stagger (keyframe `deal`).
+- `CardSpread` (client): owns reveal state — deals cards back-up, auto-reveals one by one, and each
+  card is clickable / keyboard-accessible (role=button, Enter/Space) to flip back and forth.
+  `page.tsx` stays a server component, just passes sample cards.
+- Sample 3-card spread on `/`: The Fool (upright), The Star (reversed), Ace of Cups — data mirrors
+  the backend seed. Real draw wiring comes in Phase 5.
+- Bug fixed: hover put `filter: drop-shadow` on the `preserve-3d` flipper, which flattens the 3D
+  context and breaks `backface-visibility` (front leaked through the back on hover). Moved the lift
+  to `.card` and the glow to per-face `box-shadow`.
+- `prefers-reduced-motion`: deal + flip transitions disabled.
+- Next: shuffle animation + `/reading/[id]`, or wire the input → `/readings/draw` (Phase 5).
+
 ## 2026-06-06 — Backend: cards + draw (Phase 4 core started)
 - DB: Postgres 17 via Docker Compose (`docker-compose.yml`, service `tarot-postgres`, volume `tarot-pgdata`).
 - ORM: **TypeORM** chosen over Prisma (native NestJS, decorator entities). Installed @nestjs/typeorm,

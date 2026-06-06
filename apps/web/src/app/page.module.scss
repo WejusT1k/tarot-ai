@@ -56,4 +56,8 @@
   text-shadow: 0 0 25px rgba(91, 58, 122, 0.5);
 }
 
-/* The cards will be rendered here (2D) in a later phase, replacing the old table. */
+/* Where dealt cards land — sits above the overlays so the art stays crisp.
+   The CardSpread inside handles the row layout. */
+.deal {
+  @apply absolute inset-x-0 bottom-[10%] z-30 flex justify-center px-6;
+}

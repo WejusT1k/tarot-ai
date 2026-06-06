@@ -8,13 +8,13 @@
 Goal: the visual centerpiece — cards dealt into the scene, shuffle, deal, flip — in 2D.
 
 ## Tasks (2D approach)
-- [ ] Card component (2D) — face (card art) + back (card back), flip animation (CSS/Framer Motion)
-- [ ] Upright / reversed state
+- [x] Card component (2D) — face (card art) + back (CSS card back), 3D flip animation (CSS)
+- [x] Upright / reversed state (art rotates 180°, plate stays upright + "Reversed" label)
 - [ ] Shuffle animation — cards scatter and reassemble
-- [ ] Deal animation — cards slide to positions one by one (3-card spread)
-- [ ] Layout the dealt cards in the lower area where the table used to be
-- [ ] Integrate into `/` and `/reading/[id]`
-- [ ] Decide animation lib: CSS-only vs Framer Motion (lean Framer Motion for orchestration)
+- [x] Deal animation — cards slide/rotate into place one by one (staggered)
+- [x] Layout the dealt cards in the lower area where the table used to be
+- [~] Integrate into `/` (done) and `/reading/[id]` (pending)
+- [x] Decide animation lib: **CSS-only** (perspective + rotateY flip, keyframe deal) — no Framer Motion needed yet
 
 ## Notes
 - **Card art: Rider-Waite-Smith (public domain).** Source the 78 card images + a card back.

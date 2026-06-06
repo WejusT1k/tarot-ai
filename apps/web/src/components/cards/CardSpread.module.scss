@@ -1,0 +1,6 @@
+@reference "../../app/globals.css";
+
+/* Cards fan out in a row; wraps on narrow screens. */
+.spread {
+  @apply flex flex-wrap items-center justify-center gap-5 sm:gap-8;
+}
