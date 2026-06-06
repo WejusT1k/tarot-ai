@@ -1,0 +1,254 @@
+@reference "../../app/globals.css";
+
+/* Card footprint — classic tarot ratio (~1 : 1.71). Scales with viewport.
+   This element owns the 3D perspective and the deal-in entrance. */
+.card {
+  @apply relative select-none;
+
+  width: clamp(9rem, 38vw, 14rem);
+  aspect-ratio: 100 / 171;
+  perspective: 1400px;
+  animation: deal 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--deal-delay, 0ms);
+}
+
+.card[role="button"] {
+  @apply cursor-pointer;
+}
+
+.card[role="button"]:focus-visible {
+  @apply outline-none;
+
+  border-radius: 1rem;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-ember) 70%, transparent);
+}
+
+/* Cards slide up and rotate into place when dealt. */
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: translateY(28px) rotate(-4deg) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+/* The rotating body. Back faces the viewer until revealed. */
+.flipper {
+  @apply absolute inset-0;
+
+  transform-style: preserve-3d;
+  transform: rotateY(180deg);
+  transition: transform 700ms cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+
+.flipper[data-revealed] {
+  transform: rotateY(0deg);
+}
+
+/* Lift the whole card on hover. NOTE: never put `filter` on .flipper — it
+   flattens the preserve-3d context and breaks backface-visibility, leaking the
+   front face through the back. Hover glow lives on the faces below instead. */
+.card {
+  transition: transform 300ms ease;
+}
+
+.card:hover,
+.card:focus-within {
+  transform: translateY(-6px);
+  z-index: 1;
+}
+
+/* Both faces stack in the same space; only the forward one is visible. */
+.face {
+  @apply absolute inset-0 overflow-hidden rounded-2xl;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.front {
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+/* ---------------------------------------------------------------------------
+   Front face — ornate double frame around the artwork.
+   --------------------------------------------------------------------------- */
+
+.frame {
+  @apply absolute inset-0 flex flex-col overflow-hidden rounded-2xl;
+
+  padding: 0.5rem;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--color-felt-rim) 90%, var(--color-ember-soft)) 0%,
+    var(--color-felt) 55%,
+    var(--color-night) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--color-ember) 55%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-ember) 18%, transparent),
+    inset 0 1px 14px rgba(0, 0, 0, 0.6),
+    0 18px 40px rgba(0, 0, 0, 0.55);
+  transition: box-shadow 300ms ease;
+}
+
+.card:hover .frame {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-ember) 30%, transparent),
+    inset 0 1px 14px rgba(0, 0, 0, 0.6),
+    0 26px 52px rgba(0, 0, 0, 0.6),
+    0 0 48px rgba(204, 142, 72, 0.32);
+}
+
+/* Artwork window — holds the next/image fill. */
+.imageWrap {
+  @apply relative w-full flex-1 overflow-hidden rounded-lg;
+
+  border: 1px solid color-mix(in srgb, var(--color-ember) 25%, transparent);
+  background: var(--color-night);
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+
+/* Reversed draw: flip the art, leave the plate upright. */
+.frame[data-reversed] .image {
+  transform: rotate(180deg);
+}
+
+/* Diagonal light sweep for a faint enchanted gloss. */
+.sheen {
+  @apply pointer-events-none absolute inset-0;
+
+  background: linear-gradient(
+    120deg,
+    transparent 35%,
+    rgba(231, 221, 199, 0.08) 50%,
+    transparent 65%
+  );
+  mix-blend-mode: screen;
+}
+
+/* Nameplate beneath the art. */
+.plate {
+  @apply flex flex-col items-center gap-0.5 pt-2 pb-0.5 text-center;
+}
+
+.number {
+  @apply font-display text-[0.6rem] tracking-[0.35em];
+
+  color: color-mix(in srgb, var(--color-ember) 70%, transparent);
+}
+
+.name {
+  @apply font-display text-[0.78rem] font-semibold uppercase leading-tight tracking-[0.18em];
+
+  color: color-mix(in srgb, var(--color-bone) 88%, transparent);
+  text-shadow: 0 0 12px rgba(91, 58, 122, 0.4);
+}
+
+.reversed {
+  @apply font-sans text-[0.6rem] uppercase tracking-[0.3em];
+
+  color: color-mix(in srgb, var(--color-mist) 70%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
+   Back face — the deck's "сорочка": velvet field, gold rim, arcane emblem.
+   --------------------------------------------------------------------------- */
+
+.backFrame {
+  @apply absolute inset-0 flex items-center justify-center overflow-hidden rounded-2xl;
+
+  background:
+    radial-gradient(
+      120% 90% at 50% 50%,
+      color-mix(in srgb, var(--color-arcane) 30%, transparent) 0%,
+      transparent 60%
+    ),
+    linear-gradient(160deg, var(--color-dusk) 0%, var(--color-night) 100%);
+  border: 1px solid color-mix(in srgb, var(--color-ember) 55%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-ember) 18%, transparent),
+    inset 0 0 0 6px color-mix(in srgb, var(--color-ember) 12%, transparent),
+    inset 0 1px 14px rgba(0, 0, 0, 0.6),
+    0 18px 40px rgba(0, 0, 0, 0.55);
+  transition: box-shadow 300ms ease;
+}
+
+.card:hover .backFrame {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-ember) 30%, transparent),
+    inset 0 0 0 6px color-mix(in srgb, var(--color-ember) 16%, transparent),
+    inset 0 1px 14px rgba(0, 0, 0, 0.6),
+    0 26px 52px rgba(0, 0, 0, 0.6),
+    0 0 48px rgba(204, 142, 72, 0.32);
+}
+
+/* Repeating diamond filigree across the velvet. */
+.backFiligree {
+  @apply pointer-events-none absolute inset-3 rounded-xl;
+
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--color-ember) 14%, transparent) 0,
+      color-mix(in srgb, var(--color-ember) 14%, transparent) 1px,
+      transparent 1px,
+      transparent 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-ember) 14%, transparent) 0,
+      color-mix(in srgb, var(--color-ember) 14%, transparent) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+  border: 1px solid color-mix(in srgb, var(--color-ember) 30%, transparent);
+  mask-image: radial-gradient(120% 90% at 50% 50%, #000 55%, transparent 85%);
+}
+
+/* Central radiant emblem — a faint occult sun/star burst. */
+.backEmblem {
+  @apply pointer-events-none relative h-1/3 w-1/3 rounded-full;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-ember) 55%, transparent) 0%,
+      color-mix(in srgb, var(--color-ember) 12%, transparent) 38%,
+      transparent 62%
+    ),
+    conic-gradient(
+      from 0deg,
+      transparent 0deg 18deg,
+      color-mix(in srgb, var(--color-ember) 40%, transparent) 18deg 22deg,
+      transparent 22deg 40deg,
+      color-mix(in srgb, var(--color-ember) 40%, transparent) 40deg 44deg,
+      transparent 44deg 62deg,
+      color-mix(in srgb, var(--color-ember) 40%, transparent) 62deg 66deg,
+      transparent 66deg 84deg,
+      color-mix(in srgb, var(--color-ember) 40%, transparent) 84deg 88deg,
+      transparent 88deg
+    );
+  box-shadow: 0 0 24px color-mix(in srgb, var(--color-arcane) 45%, transparent);
+}
+
+/* Respect reduced-motion: drop the deal + flip transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+  .flipper {
+    transition: none;
+  }
+}
