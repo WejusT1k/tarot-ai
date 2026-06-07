@@ -76,7 +76,7 @@
 
 /* Summon button — gold-rimmed, glows on hover, shows a spinner while drawing. */
 .submit {
-  @apply mt-6 inline-flex items-center justify-center gap-2.5 rounded-full px-9 py-3.5 font-display text-sm uppercase tracking-[0.3em] transition-all duration-300;
+  @apply inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full px-9 py-3.5 font-display text-sm uppercase tracking-[0.3em] leading-none transition-all duration-300;
 
   color: var(--color-bone);
   background: linear-gradient(
@@ -107,6 +107,41 @@
 
   &:disabled {
     @apply cursor-not-allowed opacity-80;
+  }
+}
+
+/* Reading phase: the two action buttons sit side by side (stack on narrow screens). */
+.actions {
+  @apply mt-6 flex flex-wrap items-center justify-center gap-3;
+}
+
+/* Standalone "Reveal the spread" button needs its own top spacing from the field. */
+.solo {
+  @apply mt-8;
+}
+
+/* Quieter, outline-style companion to .submit (e.g. "New reading"). */
+.secondary {
+  @apply inline-flex cursor-pointer items-center justify-center rounded-full px-9 py-3.5 font-display text-sm uppercase tracking-[0.3em] leading-none transition-all duration-300;
+
+  color: color-mix(in srgb, var(--color-mist) 85%, transparent);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-mist) 25%, transparent);
+
+  &:hover:not(:disabled) {
+    color: var(--color-bone);
+    border-color: color-mix(in srgb, var(--color-mist) 50%, transparent);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    @apply outline-none;
+
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-mist) 45%, transparent);
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed opacity-50;
   }
 }
 

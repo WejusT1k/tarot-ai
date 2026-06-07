@@ -29,6 +29,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.80",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.0.1",
@@ -36,6 +37,7 @@
     "@nestjs/swagger": "^11.4.4",
     "@nestjs/typeorm": "^11.0.1",
     "@tarot-ai/types": "workspace:*",
+    "ai": "^6.0.197",
     "dotenv": "^17.4.2",
     "pg": "^8.21.0",
     "reflect-metadata": "^0.2.2",

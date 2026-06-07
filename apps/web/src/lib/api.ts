@@ -1,4 +1,8 @@
-import type { ReadingCard, SpreadType } from "@tarot-ai/types";
+import type {
+  InterpretRequest,
+  ReadingCard,
+  SpreadType,
+} from "@tarot-ai/types";
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001/api";
@@ -22,4 +26,34 @@ export async function drawReading(
   }
 
   return res.json() as Promise<ReadingCard[]>;
+}
+
+/**
+ * Ask the backend to interpret an already-drawn spread. The reading streams back
+ * as plain text; `onDelta` fires with each chunk so the UI can reveal it as the
+ * reader "speaks". This is the separate, on-demand AI step.
+ */
+export async function interpretReading(
+  request: InterpretRequest,
+  onDelta: (delta: string) => void,
+  signal?: AbortSignal,
+): Promise<void> {
+  const res = await fetch(`${API_URL}/readings/interpret`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+    signal,
+  });
+
+  if (!res.ok || !res.body) {
+    throw new Error(`Interpret request failed (${res.status})`);
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    onDelta(decoder.decode(value, { stream: true }));
+  }
 }

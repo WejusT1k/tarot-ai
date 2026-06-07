@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import type { ReadingCard, SpreadType } from '@tarot-ai/types';
+import type {
+  InterpretCard,
+  InterpretRequest,
+  Locale,
+  ReadingCard,
+  SpreadType,
+} from '@tarot-ai/types';
 import { Card } from '../cards/card.entity';
 
 export class DrawDto {
@@ -30,4 +36,34 @@ export class ReadingCardDto implements ReadingCard {
     description: 'true if the card landed reversed',
   })
   isReversed!: boolean;
+}
+
+/** A drawn card referenced by id + orientation, sent to the interpret step. */
+export class InterpretCardDto implements InterpretCard {
+  @ApiProperty({ example: 1, description: 'Card id (1-78)' })
+  cardId!: number;
+
+  @ApiProperty({ example: 'Present' })
+  positionName!: string;
+
+  @ApiProperty({ example: false })
+  isReversed!: boolean;
+}
+
+/** Request body for the separate AI-interpretation step. */
+export class InterpretDto implements InterpretRequest {
+  @ApiProperty({ example: 'Will my new venture flourish?' })
+  question!: string;
+
+  @ApiProperty({ enum: ['en', 'ua'], example: 'en' })
+  locale!: Locale;
+
+  @ApiProperty({
+    enum: ['single', 'three_card', 'celtic_cross'],
+    example: 'three_card',
+  })
+  spreadType!: SpreadType;
+
+  @ApiProperty({ type: InterpretCardDto, isArray: true })
+  cards!: InterpretCardDto[];
 }

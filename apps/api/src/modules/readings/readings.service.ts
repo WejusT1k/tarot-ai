@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import type { ReadingCard, SpreadType } from '@tarot-ai/types';
+import type { InterpretCard, ReadingCard, SpreadType } from '@tarot-ai/types';
 import { CardsService } from '../cards/cards.service';
+import type { InterpretCardContext } from './interpretation.service';
 
 /** Position labels per spread. The drawn cards map onto these in order. */
 const SPREAD_POSITIONS: Record<SpreadType, string[]> = {
@@ -40,6 +41,26 @@ export class ReadingsService {
       positionName: positions[index],
       isReversed: Math.random() < 0.5,
     }));
+  }
+
+  /**
+   * Resolve client-sent card refs into full card context for interpretation,
+   * preserving order. The meanings come from the DB, not the client, so the AI
+   * always reads the authoritative deck. Throws NotFound on an unknown id.
+   */
+  async resolveInterpretCards(
+    cards: InterpretCard[],
+  ): Promise<InterpretCardContext[]> {
+    if (!cards?.length) {
+      throw new BadRequestException('No cards provided to interpret.');
+    }
+    return Promise.all(
+      cards.map(async (c) => ({
+        card: await this.cardsService.findOne(c.cardId),
+        positionName: c.positionName,
+        isReversed: c.isReversed,
+      })),
+    );
   }
 
   /** Fisher-Yates shuffle on a copy. */
