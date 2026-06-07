@@ -22,8 +22,18 @@
   `@tarot-ai/types` dist first — dist is gitignored). Added root `vercel.json` (framework nextjs,
   turbo build command, `outputDirectory: apps/web/.next`) so Vercel builds the monorepo correctly.
 - Note: `/readings/draw` still ignores the question text (random draw); question is client-validated
-  only. Backend isn't hosted yet — on Vercel the draw will error until the Nest API + Postgres are
-  deployed and `NEXT_PUBLIC_API_URL` points at them.
+  only.
+- **Backend → Vercel prep** (NestJS *is* supported on Vercel now — one Fluid-compute Function;
+  Postgres via Neon on the Vercel Marketplace, since Vercel Postgres → Neon in Dec 2024):
+  - `apps/api/vercel.json`: `buildCommand` = `cd ../.. && pnpm turbo run build --filter=@tarot-ai/api`
+    so `@tarot-ai/types` (dist is gitignored) builds before the Nest function is bundled.
+  - `data-source.ts`: `synchronize` now `DB_SYNCHRONIZE === 'true' || NODE_ENV !== 'production'`
+    (OFF on the serverless function; opt-in `DB_SYNCHRONIZE=true` for the one-time Neon schema+seed).
+    Added env-gated TLS (`DATABASE_SSL=true` for Neon).
+  - `main.ts`: CORS `WEB_ORIGIN` is now comma-separated (prod + localhost).
+  - `.env.example`: documented Neon pooled string, `DATABASE_SSL`, `DB_SYNCHRONIZE`.
+  - Verified: `turbo run build --filter=@tarot-ai/api` green; local API still serves /cards + /draw.
+  - Deploy = 2 Vercel projects from this repo (web: root dir = repo root; api: root dir = `apps/api`).
 - Deferred: mobile responsive cards as a scrollable vertical list (see phase-2 doc).
 
 ## 2026-06-06 — Phase 2 (2D cards): TarotCard component + flip + deal
