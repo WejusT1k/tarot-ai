@@ -5,7 +5,11 @@
 .card {
   @apply relative select-none;
 
-  width: clamp(9rem, 38vw, 14rem);
+  /* Self-size to fit on one screen: capped on large screens (11rem), narrow
+     enough that three fit a row (27vw), and short enough to fit vertically
+     (26dvh ≈ ~44dvh tall with the aspect ratio below — keeps landscape phones
+     on one screen too). */
+  width: min(11rem, 27vw, 26dvh);
   aspect-ratio: 100 / 171;
   perspective: 1400px;
   animation: deal 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
