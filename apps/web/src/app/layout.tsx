@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, EB_Garamond } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -29,7 +30,10 @@ export default function RootLayout({
       lang="en"
       className={`${cinzel.variable} ${ebGaramond.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
