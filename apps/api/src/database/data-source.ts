@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import { join } from 'node:path';
 import { config } from 'dotenv';
 import { DataSource, type DataSourceOptions } from 'typeorm';
 import { Card } from '../modules/cards/card.entity';
@@ -10,13 +11,14 @@ export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
   url: process.env.DATABASE_URL,
   entities: [Card],
-  // Schema sync from entities. ON in local dev for convenience; OFF in
-  // production (serverless must NOT sync on every cold start). For the one-time
-  // schema+seed against a managed DB (e.g. Neon), run with DB_SYNCHRONIZE=true.
-  // (Proper migrations are still the eventual target — Decision #20.)
-  synchronize:
-    process.env.DB_SYNCHRONIZE === 'true' ||
-    process.env.NODE_ENV !== 'production',
+  // Migrations own the schema in production: the deploy build runs
+  // `migration:run` (see vercel.json), so the serverless runtime never syncs
+  // or migrates on a cold start. Local dev keeps `synchronize` for zero-setup
+  // convenience — migrations are the source of truth for anything deployed.
+  synchronize: process.env.NODE_ENV !== 'production',
+  // __dirname-relative so the glob resolves whether we run from compiled JS
+  // (dist/database, used by the deploy build) or TS source (ts-node CLI).
+  migrations: [join(__dirname, 'migrations', '*.{js,ts}')],
   // Managed serverless Postgres (Neon, etc.) requires TLS.
   ssl:
     process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,

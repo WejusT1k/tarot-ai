@@ -1,4 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd ../.. && pnpm turbo run build --filter=@tarot-ai/api"
+  "buildCommand": "cd ../.. && pnpm turbo run build --filter=@tarot-ai/api && pnpm --filter @tarot-ai/api db:deploy"
 }
