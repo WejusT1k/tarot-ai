@@ -35,29 +35,3 @@
   mix-blend-mode: overlay;
   opacity: 0.06;
 }
-
-/* ---- Foreground: title + input. Sits ABOVE the overlays so it stays
-        legible and clickable on every screen height. ---- */
-
-.header {
-  @apply absolute inset-x-0 top-[11%] z-30 flex flex-col items-center px-6 text-center;
-}
-
-.eyebrow {
-  @apply font-display text-xs uppercase tracking-[0.5em];
-
-  color: color-mix(in srgb, var(--color-ember-soft) 80%, transparent);
-}
-
-.title {
-  @apply font-display mt-4 mb-10 text-3xl font-semibold tracking-[0.15em] sm:text-4xl;
-
-  color: color-mix(in srgb, var(--color-mist) 75%, transparent);
-  text-shadow: 0 0 25px rgba(91, 58, 122, 0.5);
-}
-
-/* Where dealt cards land — sits above the overlays so the art stays crisp.
-   The CardSpread inside handles the row layout. */
-.deal {
-  @apply absolute inset-x-0 bottom-[10%] z-30 flex justify-center px-6;
-}

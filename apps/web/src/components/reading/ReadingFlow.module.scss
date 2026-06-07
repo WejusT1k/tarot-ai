@@ -1,0 +1,53 @@
+@reference "../../app/globals.css";
+
+/* Foreground column — fills the viewport and lays out title → input → spread in
+   normal flow so nothing overlaps. Sits ABOVE the decorative overlays. */
+.foreground {
+  @apply relative z-30 flex min-h-dvh w-full flex-col items-center px-5;
+}
+
+/* Title + input block, anchored near the top. */
+.header {
+  @apply flex w-full flex-col items-center pt-[7vh] text-center;
+}
+
+.eyebrow {
+  @apply font-display text-[0.6rem] uppercase tracking-[0.35em] sm:text-xs sm:tracking-[0.5em];
+
+  width: 100%;
+  color: color-mix(in srgb, var(--color-ember-soft) 80%, transparent);
+}
+
+.title {
+  @apply font-display mt-3 mb-7 text-2xl font-semibold tracking-widest sm:text-4xl sm:tracking-[0.15em];
+
+  width: 100%;
+  max-width: 100%;
+  color: color-mix(in srgb, var(--color-mist) 75%, transparent);
+  text-shadow: 0 0 25px rgba(91, 58, 122, 0.5);
+}
+
+/* Cards fill the remaining height and stay centered. The cards self-size to fit
+   (see TarotCard .card), so the whole reading stays on one screen. */
+.spread {
+  @apply flex w-full flex-1 items-center justify-center py-5;
+}
+
+/* Short viewports (landscape phones): compress the header so cards still fit. */
+@media (max-height: 560px) {
+  .header {
+    @apply pt-[3vh];
+  }
+
+  .eyebrow {
+    @apply hidden;
+  }
+
+  .title {
+    @apply mt-2 mb-3 text-xl;
+  }
+
+  .spread {
+    @apply py-2;
+  }
+}

@@ -10,8 +10,16 @@ export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
   url: process.env.DATABASE_URL,
   entities: [Card],
-  // Dev convenience: build the schema from entities. Swap to migrations before production.
-  synchronize: process.env.NODE_ENV !== 'production',
+  // Schema sync from entities. ON in local dev for convenience; OFF in
+  // production (serverless must NOT sync on every cold start). For the one-time
+  // schema+seed against a managed DB (e.g. Neon), run with DB_SYNCHRONIZE=true.
+  // (Proper migrations are still the eventual target — Decision #20.)
+  synchronize:
+    process.env.DB_SYNCHRONIZE === 'true' ||
+    process.env.NODE_ENV !== 'production',
+  // Managed serverless Postgres (Neon, etc.) requires TLS.
+  ssl:
+    process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
   logging: process.env.NODE_ENV !== 'production' ? ['error', 'warn'] : false,
 };
 

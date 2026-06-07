@@ -1,6 +1,6 @@
 @reference "../../app/globals.css";
 
-/* Cards fan out in a row; wraps on narrow screens. */
+/* Cards stay in a single row (they self-size to fit); gap tightens on mobile. */
 .spread {
-  @apply flex flex-wrap items-center justify-center gap-5 sm:gap-8;
+  @apply flex flex-nowrap items-center justify-center gap-2.5 sm:gap-6;
 }

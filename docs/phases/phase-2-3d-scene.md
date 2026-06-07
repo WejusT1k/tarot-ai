@@ -15,6 +15,10 @@ Goal: the visual centerpiece — cards dealt into the scene, shuffle, deal, flip
 - [x] Layout the dealt cards in the lower area where the table used to be
 - [~] Integrate into `/` (done) and `/reading/[id]` (pending)
 - [x] Decide animation lib: **CSS-only** (perspective + rotateY flip, keyframe deal) — no Framer Motion needed yet
+- [ ] **Mobile responsive cards (deferred):** on `<sm` screens, stack the spread as a
+  vertical, scrollable list (cards larger, one per row); keep the single-row layout on `≥sm`.
+  Trying to fit 3 cards in one row on narrow phones is too cramped — let mobile scroll instead.
+  (Desktop overlap bug already fixed by switching the scene to normal flex-flow layout.)
 
 ## Notes
 - **Card art: Rider-Waite-Smith (public domain).** Source the 78 card images + a card back.
