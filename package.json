@@ -17,14 +17,5 @@
     "prettier": "^3.4.2",
     "turbo": "^2.9.16",
     "typescript": "^6.0.3"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@nestjs/core",
-      "@parcel/watcher",
-      "@scarf/scarf",
-      "sharp",
-      "unrs-resolver"
-    ]
   }
 }

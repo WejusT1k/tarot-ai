@@ -2,8 +2,12 @@ packages:
   - "apps/*"
   - "packages/*"
 
-onlyBuiltDependencies:
-  - "@nestjs/core"
-  - "@parcel/watcher"
-  - sharp
-  - unrs-resolver
+# pnpm 11 approves dependency build scripts via `allowBuilds` (the old
+# `onlyBuiltDependencies` list is ignored). Without this, `pnpm install` fails
+# in CI (Vercel) with ERR_PNPM_IGNORED_BUILDS.
+allowBuilds:
+  "@nestjs/core": true
+  "@parcel/watcher": true
+  "@scarf/scarf": true
+  sharp: true
+  unrs-resolver: true
