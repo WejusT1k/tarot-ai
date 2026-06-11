@@ -1,13 +1,13 @@
 {
   "source": "WejusT1k/claude-code-templates",
-  "sourceSha": "acf6a9a52ec2f4a88a8d027268e024d07d5a1d29",
+  "sourceSha": "f631d6b28b692d30d7aa032a4e8fc13aa966006e",
   "packs": [
     "_global",
     "spa"
   ],
-  "generatedAt": "2026-06-11T15:19:57.331Z",
+  "generatedAt": "2026-06-11T15:56:45.826Z",
   "files": {
-    ".claude/skills/commit-style/SKILL.md": "a2985a742bffa1dbb77e0c9a294e7c4036df5eff88dd70b59bdd4a53a8fb01d7",
+    ".claude/skills/commit-style/SKILL.md": "6d799ecd84e7b89d00e0af45454946b0761dad5211b4348cfd05f2737f04a769",
     ".claude/commands/review.md": "2497a8859af1f99dd7742187b26c89e5877f3edf6c0abfa4f517de153642953b",
     ".claude/skills/spa-architecture/SKILL.md": "bf710c4157a293f8d369df7afc91016ff5e5a613a25d19b545e8ff9ff643be70"
   }
