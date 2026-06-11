@@ -1,0 +1,14 @@
+{
+  "source": "WejusT1k/claude-code-templates",
+  "sourceSha": "7737f813ae12c361244f2be6a0cee6d37cb59efa",
+  "packs": [
+    "_global",
+    "spa"
+  ],
+  "generatedAt": "2026-06-11T15:02:29.951Z",
+  "files": {
+    ".claude/skills/commit-style/SKILL.md": "a5100411af3de031f494869d461dc6788bf4780205b8213b3df3ec7fefefdd96",
+    ".claude/commands/review.md": "2497a8859af1f99dd7742187b26c89e5877f3edf6c0abfa4f517de153642953b",
+    ".claude/skills/spa-architecture/SKILL.md": "bf710c4157a293f8d369df7afc91016ff5e5a613a25d19b545e8ff9ff643be70"
+  }
+}
