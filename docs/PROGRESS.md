@@ -2,7 +2,59 @@
 
 > Running log of what we actually did each session. Newest first.
 
+## 2026-07-04 — Seeker profile + personalized AI readings
+
+- **Shared types**: `UserProfile` on `User` (birthDate, gender, about, occupation,
+  relationshipStatus, focusAreas) + `GENDERS` / `RELATIONSHIP_STATUSES` / `FOCUS_AREAS`
+  const arrays (shared by API validation and the web form) + `UpdateProfileRequest`.
+- **Backend**: profile columns on `users` (all nullable / `focus_areas` defaults `'{}'`;
+  migration `1783209600000-AddUserProfileFields`, verified on a scratch DB).
+  `PATCH /auth/profile` (guarded; manual validation — birth date is a real calendar date
+  1900..today, about ≤600, occupation ≤120, enum/area whitelists; only provided keys change).
+- **Personalization**: `seeker-context.ts` unpacks the profile into an "About the seeker"
+  prompt block — age, **zodiac sign**, **tarot birth card** (digit-sum of the birth date
+  reduced onto the major arcana, 22→Fool), occupation, relationship, focus areas, self-
+  description. Interpret controller loads the authed user (`auth.me`, vanished account →
+  anonymous fallback) and passes `seeker` into `InterpretationService`; system prompt tells
+  the model to weave background in silently, never recite it, never flatter. Verified live:
+  the streamed reading referenced the profile's occupation/about.
+- **Frontend**: `ProfileModal` (velvet panel like AuthModal — date + occupation inputs,
+  gold-lit toggle chips for gender/relationship/focus areas, "About you" textarea, "Save my
+  story"). Opened by clicking your name in the `AuthStatus` corner chip. Mounted only while
+  open so the form re-seeds from the current user; saves via `PATCH /auth/profile` and
+  refreshes the context user. `color-scheme: dark` so the native date picker matches.
+- Tests: `seeker-context.spec.ts` (zodiac boundaries, birth-card reduction incl. the 22→Fool
+  wrap, age before/after birthday, only-shared-fields). 22 API tests green.
+
+## 2026-07-04 — Auth: email+password accounts, interpret gated behind login (Decision #11 shipped)
+
+- **Backend** (`apps/api/src/modules/auth/`): `User` entity (uuid PK generated in app code —
+  no DB uuid extension; email stored lowercased, unique; `users_locale_enum`), `AuthService`
+  (bcryptjs 10 rounds, JWT HS256 via `@nestjs/jwt`, 7-day token, secret read lazily per call
+  so a missing `JWT_SECRET` only 503s when auth is used), `JwtAuthGuard` (plain guard, **no
+  passport**), controller: `POST /auth/register`, `POST /auth/login`, `GET /auth/me`.
+  Same 401 for unknown email and wrong password. Manual validation in the controller
+  (name ≥2, email regex, password ≥8) — consistent with the readings controller style.
+- **Gate**: `POST /readings/interpret` now requires `Authorization: Bearer <token>`
+  (`@UseGuards(JwtAuthGuard)`); `/readings/draw` stays public — the free hook. Swagger
+  `.addBearerAuth()` + auth tag.
+- **Migration** `1783123200000-CreateUsersTable` (verified against a scratch DB; deploy's
+  `db:deploy` will apply it). Entity registered in `data-source.ts`.
+- **Frontend**: `AuthProvider` (client context; token in localStorage `tarot-ai.token`,
+  restored via `/auth/me` on load — only a definite 401 clears it), `AuthModal` (Radix Dialog,
+  dark-velvet fantasy panel, sign-in/sign-up toggle, streams server error messages),
+  `AuthStatus` corner chip (☾ name + sign out / sign in). `ReadingFlow`: guest question+draw
+  unchanged; clicking "Interpret with AI" as guest opens the auth modal, parks the intent in
+  a ref, and `onSuccess(freshToken)` resumes the interpretation (no effect — avoids the React
+  Compiler sync-setState lint). A 401 mid-interpret signs out and reopens the gate.
+  `api.ts`: `ApiError(status)`, `registerUser`/`loginUser`/`fetchMe`, interpret takes a token.
+- Tests: `auth.service.spec.ts` (8 tests — register/login/verify, mocked repo). Verified live
+  end-to-end with curl: register → 409 dup → 401 wrong pass → login → `/auth/me` →
+  interpret 401 without token / streams with token.
+- Deploy note: **`JWT_SECRET` must be set in the API Vercel project env.**
+
 ## 2026-06-07 — Wire frontend → backend draw + deploy prep (Vercel)
+
 - API client `apps/web/src/lib/api.ts`: `drawReading()` → `POST /readings/draw`, base URL from
   `NEXT_PUBLIC_API_URL` (fallback `http://localhost:3001/api`).
 - `QuestionInput` is now controlled (value/onChange/onSubmit/loading/error) with a gold "Reveal the
@@ -23,7 +75,7 @@
   turbo build command, `outputDirectory: apps/web/.next`) so Vercel builds the monorepo correctly.
 - Note: `/readings/draw` still ignores the question text (random draw); question is client-validated
   only.
-- **Backend → Vercel prep** (NestJS *is* supported on Vercel now — one Fluid-compute Function;
+- **Backend → Vercel prep** (NestJS _is_ supported on Vercel now — one Fluid-compute Function;
   Postgres via Neon on the Vercel Marketplace, since Vercel Postgres → Neon in Dec 2024):
   - `apps/api/vercel.json`: `buildCommand` = `cd ../.. && pnpm turbo run build --filter=@tarot-ai/api`
     so `@tarot-ai/types` (dist is gitignored) builds before the Nest function is bundled.
@@ -37,6 +89,7 @@
 - Deferred: mobile responsive cards as a scrollable vertical list (see phase-2 doc).
 
 ## 2026-06-06 — Phase 2 (2D cards): TarotCard component + flip + deal
+
 - `TarotCard` (`apps/web/src/components/cards/`): presentational 2D card. Classic tarot ratio,
   ornate gold/velvet frame, RWS art via `next/image` (fill). Major arcana shows its number on the
   nameplate; minors don't.
@@ -57,6 +110,7 @@
 - Next: shuffle animation + `/reading/[id]`, or wire the input → `/readings/draw` (Phase 5).
 
 ## 2026-06-06 — Backend: cards + draw (Phase 4 core started)
+
 - DB: Postgres 17 via Docker Compose (`docker-compose.yml`, service `tarot-postgres`, volume `tarot-pgdata`).
 - ORM: **TypeORM** chosen over Prisma (native NestJS, decorator entities). Installed @nestjs/typeorm,
   typeorm 1.0, pg, @nestjs/config, dotenv.
@@ -76,6 +130,7 @@
 - Next: finish image fetch; then wire the frontend to the draw endpoint (Phase 5) or add auth/AI.
 
 ## 2026-06-05 — Phase 1 UI: gloomy fantasy scene + mystical input
+
 - Built the landing scene with pure CSS: deep gloomy fantasy background (arcane purple haze,
   warm low glow), heavy vignette, film grain. Fonts: Cinzel (display) + EB Garamond (body, has
   Cyrillic for future ua).
@@ -93,6 +148,7 @@
 - **Next session → Phase 2: 2D cards** — card component (face/back, flip), then shuffle + deal.
 
 ## 2026-06-05 — Phase 0 done (monorepo skeleton)
+
 - pnpm chosen as package manager (enabled via corepack). Node 24.
 - Set up Turborepo monorepo manually: root package.json, pnpm-workspace.yaml, turbo.json,
   tsconfig.base.json, .prettierrc, .gitignore, .npmrc, root README.
@@ -109,6 +165,7 @@
 - Next: Phase 1 — Frontend Foundation (i18n en/ua, fantasy theme, fortune teller + input).
 
 ## 2026-06-05 — Planning kickoff
+
 - Defined the idea: AI tarot reader with 3D card scene + fantasy fortune-teller UI.
 - Chose stack: Next.js + NestJS + Prisma/Postgres, Turborepo monorepo, Three.js (R3F), Claude AI.
 - Decided: cards = immutable seeded table; frontend i18n (en/ua) from day one; build frontend first.

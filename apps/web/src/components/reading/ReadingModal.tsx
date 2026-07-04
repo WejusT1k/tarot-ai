@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import * as Dialog from "@radix-ui/react-dialog";
-import styles from "./ReadingModal.module.scss";
+import * as Dialog from '@radix-ui/react-dialog';
+import styles from './ReadingModal.module.scss';
 
 interface ReadingModalProps {
   open: boolean;
@@ -35,10 +35,7 @@ export function ReadingModal({
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className={styles.overlay} />
-        <Dialog.Content
-          className={styles.content}
-          aria-describedby={undefined}
-        >
+        <Dialog.Content className={styles.content} aria-describedby={undefined}>
           <div className={styles.parchment}>
             <Dialog.Close className={styles.close} aria-label="Close the reading">
               ✕
@@ -50,9 +47,7 @@ export function ReadingModal({
               <span className={styles.ornLine} />
             </div>
 
-            <Dialog.Title className={styles.title}>
-              {question || "Your Reading"}
-            </Dialog.Title>
+            <Dialog.Title className={styles.title}>{question || 'Your Reading'}</Dialog.Title>
 
             <div className={styles.scrollBody}>
               {error ? (
@@ -71,12 +66,8 @@ export function ReadingModal({
                   ))}
                   {paragraphs.length === 0 && (
                     <p className={styles.paragraph}>
-                      <span className={styles.summon}>
-                        The reader turns the cards
-                      </span>
-                      {showCursor && (
-                        <span className={styles.cursor} aria-hidden />
-                      )}
+                      <span className={styles.summon}>The reader turns the cards</span>
+                      {showCursor && <span className={styles.cursor} aria-hidden />}
                     </p>
                   )}
                 </>

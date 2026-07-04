@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import styles from "./QuestionInput.module.scss";
+import styles from './QuestionInput.module.scss';
 
 interface QuestionInputProps {
   value: string;
@@ -80,9 +80,9 @@ export function QuestionInput({
                 Reading the cards…
               </>
             ) : interpreted ? (
-              "View reading"
+              'View reading'
             ) : (
-              "Interpret with AI"
+              'Interpret with AI'
             )}
           </button>
           <button
@@ -107,7 +107,7 @@ export function QuestionInput({
               Consulting the cards…
             </>
           ) : (
-            "Reveal the spread"
+            'Reveal the spread'
           )}
         </button>
       )}

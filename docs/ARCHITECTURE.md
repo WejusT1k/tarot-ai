@@ -59,12 +59,14 @@ Built so adding a locale = one new catalog file + one enum entry.
   font's charset before committing to it; pick a Cyrillic-capable fallback if not.
 
 ### Localization touching the AI
+
 The reading's language is part of the request. Frontend sends the active `locale` with
 `POST /readings`; the AI system prompt instructs Claude to answer in that language. So a
 `ua` user gets a Ukrainian interpretation, `en` user gets English — same cards, localized
 voice of the fortune teller.
 
 ### Tarot card data and locale
+
 Card `name` / `description` / `meanings` are reference content. Options (see DECISIONS #6):
 either store per-locale card text in the DB, or keep canonical English in DB and let the
 AI translate card meaning into the user's locale at interpretation time. Leaning toward the
@@ -73,6 +75,7 @@ latter for MVP (less seed data to maintain), revisit if we ever show raw card te
 ## Data Model
 
 ### `cards` — immutable reference table (seeded once, never changes)
+
 ```
 cards
 ├── id              int (1-78), PK
@@ -88,6 +91,7 @@ cards
 ```
 
 ### `users`
+
 ```
 users
 ├── id          uuid, PK
@@ -99,6 +103,7 @@ users
 ```
 
 ### `accounts` — OAuth links, separate table for provider extensibility
+
 ```
 accounts
 ├── id                  uuid, PK
@@ -110,6 +115,7 @@ accounts
 ```
 
 ### `readings`
+
 ```
 readings
 ├── id           uuid, PK
@@ -122,6 +128,7 @@ readings
 ```
 
 ### `reading_cards` — which card landed on which position
+
 ```
 reading_cards
 ├── id            uuid, PK
@@ -133,18 +140,21 @@ reading_cards
 ```
 
 ## 3D Scene Stack
+
 - `@react-three/fiber` — React renderer for Three.js
 - `@react-three/drei` — helpers (useTexture, cameras, controls)
 - `@react-spring/three` — spring animations for shuffle / deal / flip
 - Optional later: `@react-three/rapier` for physics-based shuffle
 
 What gets rendered:
+
 - **Table:** PlaneGeometry with dark cloth texture
 - **Cards:** thin BoxGeometry — face texture (card art) + back texture (card back)
 - **Camera:** top-down with slight tilt — feels like looking down at the table
 - **Animations:** shuffle (scatter + reassemble) → deal (slide to positions) → flip
 
 ## Reading Flow
+
 ```
 1. User opens site → sees fortune teller on mystical background + single fantasy input
 2. User types question → submits
@@ -160,11 +170,13 @@ What gets rendered:
 ```
 
 ## UI Primitives
+
 Radix UI for accessible primitives (Dialog for the auth-gate modal, DropdownMenu for the
 language switcher / user menu, etc.), styled to the fantasy theme via Tailwind. Radix gives
 us focus trapping, keyboard nav, and a11y for free — important for the login modal.
 
 ## Auth Extensibility
+
 Passport strategies are isolated. Adding Apple / GitHub / Email = new `Strategy` class +
 a row in the `provider` enum, no changes to the rest of the auth flow. The `accounts`
 table being separate from `users` means one user can link multiple providers later.

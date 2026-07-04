@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import type { CSSProperties } from "react";
-import type { Card } from "@tarot-ai/types";
-import styles from "./TarotCard.module.scss";
+import Image from 'next/image';
+import type { CSSProperties } from 'react';
+import type { Card } from '@tarot-ai/types';
+import styles from './TarotCard.module.scss';
 
 interface TarotCardProps {
   card: Card;
@@ -35,18 +35,16 @@ export function TarotCard({
   return (
     <div
       className={styles.card}
-      style={{ "--deal-delay": `${dealDelay}ms` } as CSSProperties}
-      role={interactive ? "button" : undefined}
+      style={{ '--deal-delay': `${dealDelay}ms` } as CSSProperties}
+      role={interactive ? 'button' : undefined}
       tabIndex={interactive ? 0 : undefined}
       aria-pressed={interactive ? revealed : undefined}
       aria-label={
-        revealed
-          ? `${card.name}${reversed ? ", reversed" : ""}`
-          : "Face-down card — flip to reveal"
+        revealed ? `${card.name}${reversed ? ', reversed' : ''}` : 'Face-down card — flip to reveal'
       }
       onClick={onActivate}
       onKeyDown={(e) => {
-        if (interactive && (e.key === "Enter" || e.key === " ")) {
+        if (interactive && (e.key === 'Enter' || e.key === ' ')) {
           e.preventDefault();
           onActivate?.();
         }
@@ -63,10 +61,7 @@ export function TarotCard({
 
         {/* Front — the card art and nameplate */}
         <div className={`${styles.face} ${styles.front}`}>
-          <article
-            className={styles.frame}
-            data-reversed={reversed || undefined}
-          >
+          <article className={styles.frame} data-reversed={reversed || undefined}>
             <div className={styles.imageWrap}>
               <Image
                 src={card.imageUrl}
@@ -79,9 +74,7 @@ export function TarotCard({
             </div>
 
             <div className={styles.plate}>
-              {card.arcana === "major" && (
-                <span className={styles.number}>{card.number}</span>
-              )}
+              {card.arcana === 'major' && <span className={styles.number}>{card.number}</span>}
               <h3 className={styles.name}>{card.name}</h3>
               {reversed && <span className={styles.reversed}>Reversed</span>}
             </div>

@@ -3,6 +3,7 @@
 Not planned for MVP. Revisit after Phase 6. Pull items up into earlier phases if priorities shift.
 
 ## Ideas
+
 - [ ] Daily card (one free card per day, no question needed)
 - [ ] Additional spread types (single card, Celtic Cross 10-card)
 - [ ] Sound effects (shuffle, flip, ambient mystical soundtrack)
@@ -14,5 +15,6 @@ Not planned for MVP. Revisit after Phase 6. Pull items up into earlier phases if
 - [ ] Save favorite cards / personal card journal
 
 ## Notes
+
 - Localization infra (en/ua) already lands in Phase 1, so new locales here are cheap:
   add a catalog file + enum entry.

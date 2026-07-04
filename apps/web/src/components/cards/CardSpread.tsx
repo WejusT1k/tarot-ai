@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import type { Card } from "@tarot-ai/types";
-import { TarotCard } from "./TarotCard";
-import styles from "./CardSpread.module.scss";
+import { useEffect, useState } from 'react';
+import type { Card } from '@tarot-ai/types';
+import { TarotCard } from './TarotCard';
+import styles from './CardSpread.module.scss';
 
 export interface SpreadCard {
   card: Card;
@@ -23,14 +23,8 @@ interface CardSpreadProps {
  * also clickable to flip back and forth. Owns the reveal state so TarotCard can
  * stay presentational.
  */
-export function CardSpread({
-  cards,
-  dealStagger = 140,
-  revealAfter = 650,
-}: CardSpreadProps) {
-  const [revealed, setRevealed] = useState<boolean[]>(() =>
-    cards.map(() => false),
-  );
+export function CardSpread({ cards, dealStagger = 140, revealAfter = 650 }: CardSpreadProps) {
+  const [revealed, setRevealed] = useState<boolean[]>(() => cards.map(() => false));
 
   // Staggered auto-reveal after the deal settles.
   useEffect(() => {

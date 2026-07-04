@@ -7,9 +7,10 @@ Package manager: **pnpm** (via corepack). Versions used: Next 16.2.7, NestJS 11.
 Turbo 2.9.16, TypeScript 6.0.3.
 
 ## Tasks
+
 - [x] `git init` + `.gitignore`
 - [x] Turborepo init (pnpm workspaces + turbo.json — set up manually, not create-turbo)
-- [x] `apps/web` — Next.js (App Router, TypeScript, Tailwind v4, src-dir, @/* alias)
+- [x] `apps/web` — Next.js (App Router, TypeScript, Tailwind v4, src-dir, @/\* alias)
 - [x] `apps/api` — NestJS (TypeScript, strict)
 - [x] `packages/types` — shared TS interfaces (Card, Reading, User, Locale) → compiled to CJS dist
 - [x] Prettier config at root; ESLint configs per app from scaffolders
@@ -19,6 +20,7 @@ Turbo 2.9.16, TypeScript 6.0.3.
 - [ ] Seed script for 78 tarot cards (`prisma/seed.ts`) → **deferred to Phase 4**
 
 ## Notes
+
 - Backend deferred — frontend is being built first. Monorepo shell is up so shared
   `packages/types` is available to the frontend now.
 - `packages/types` compiles to CommonJS `dist/` (works for both CJS Nest + bundled Next).
@@ -32,5 +34,6 @@ Turbo 2.9.16, TypeScript 6.0.3.
   sharp, unrs-resolver, @nestjs/core.
 
 ## Done when
+
 - [x] `turbo` builds both apps without error.
 - [x] `packages/types` is importable from both `apps/web` and `apps/api`.

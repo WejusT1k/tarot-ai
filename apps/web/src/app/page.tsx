@@ -1,5 +1,5 @@
-import { ReadingFlow } from "@/components/reading/ReadingFlow";
-import styles from "./page.module.scss";
+import { ReadingFlow } from '@/components/reading/ReadingFlow';
+import styles from './page.module.scss';
 
 export default function Home() {
   return (

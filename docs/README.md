@@ -5,11 +5,13 @@
 > Last updated: 2026-06-05
 
 ## Idea
+
 Web app where a user asks a question, the system shuffles and deals tarot cards in a
 3D scene (top-down view of a table), and an AI fortune teller interprets the cards in
 the context of the question and gives an answer.
 
 ## Tech Stack
+
 - **Frontend:** Next.js (latest), TypeScript, Tailwind CSS, Three.js via React Three Fiber
 - **UI primitives:** Radix UI (modal, dropdown, etc.), styled to fantasy theme
 - **i18n:** next-intl — `en` (default) + `ua` from day one
@@ -20,15 +22,18 @@ the context of the question and gives an answer.
 - **Monorepo:** Turborepo (both frontend + backend in this repo)
 
 ## Key UX Decision — Auth-gated answer (teaser)
+
 Guests can ask a question and watch the cards shuffle and deal. The AI interpretation is
 gated behind a login/register modal — the magic is the hook, the answer requires auth.
 
 ## Doc Index
+
 - [Architecture](./ARCHITECTURE.md) — repo layout, modules, data model
 - [Decisions](./DECISIONS.md) — open + resolved decisions log
 - [Progress](./PROGRESS.md) — running log of what we did each session
 
 ### Phases
+
 - [Phase 0 — Monorepo Setup](./phases/phase-0-monorepo.md)
 - [Phase 1 — Frontend Foundation](./phases/phase-1-frontend-foundation.md) ← **start here**
 - [Phase 2 — 3D Card Scene](./phases/phase-2-3d-scene.md)
@@ -39,11 +44,13 @@ gated behind a login/register modal — the magic is the hook, the answer requir
 - [Phase 7 — Stretch Features](./phases/phase-7-stretch.md)
 
 ## Status Legend
+
 - `[ ]` — not started
 - `[~]` — in progress
 - `[x]` — done
 - `[!]` — blocked / needs decision
 
 ## Current Focus
+
 Phase 1 scene + input are done. **Next up: Phase 2 — 2D cards** — build the card component
 (face / back, flip), then shuffle + deal into the reserved lower area of the scene.

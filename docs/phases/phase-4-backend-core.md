@@ -3,6 +3,7 @@
 Goal: cards API + readings + AI integration. ORM: **TypeORM** + Postgres (Docker Compose).
 
 ## Tasks
+
 - [x] Postgres via Docker Compose + TypeORM wiring (data-source, ConfigModule)
 - [x] `Card` entity + seed 78 cards (`pnpm seed`, idempotent)
 - [x] `CardsModule` — GET /cards, GET /cards/:id (read-only, from seeded immutable table)
@@ -18,15 +19,18 @@ Goal: cards API + readings + AI integration. ORM: **TypeORM** + Postgres (Docker
 - [ ] Switch `synchronize` → TypeORM migrations before prod (Decision #20)
 
 ## Open Decisions referenced
+
 - #2 AI streaming transport (SSE vs WebSocket)
 - #6 Localized card text (per-locale in DB vs AI translates) — leaning AI translates
 - #11 Anonymous readings — affects whether POST /readings requires auth
 
 ## Notes
+
 - Use the latest Claude model. Check the claude-api skill for current model ids/pricing
   before wiring the AI call.
 - The reading's `locale` is sent from the frontend and stored on the reading.
 
 ## Done when
+
 - POST /readings returns randomized cards + a localized AI interpretation.
 - Readings persist and are listable per user.

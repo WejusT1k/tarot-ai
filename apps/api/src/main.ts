@@ -23,6 +23,8 @@ async function bootstrap() {
       'Cards reference deck and reading draws for the Tarot AI app.',
     )
     .setVersion('0.1.0')
+    .addBearerAuth()
+    .addTag('auth', 'Email + password accounts, JWT bearer tokens')
     .addTag('cards', 'The immutable 78-card reference deck')
     .addTag('readings', 'Draw cards for a spread')
     .build();

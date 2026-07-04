@@ -8,6 +8,7 @@
 Goal: the visual centerpiece — cards dealt into the scene, shuffle, deal, flip — in 2D.
 
 ## Tasks (2D approach)
+
 - [x] Card component (2D) — face (card art) + back (CSS card back), 3D flip animation (CSS)
 - [x] Upright / reversed state (art rotates 180°, plate stays upright + "Reversed" label)
 - [ ] Shuffle animation — cards scatter and reassemble
@@ -16,18 +17,21 @@ Goal: the visual centerpiece — cards dealt into the scene, shuffle, deal, flip
 - [~] Integrate into `/` (done) and `/reading/[id]` (pending)
 - [x] Decide animation lib: **CSS-only** (perspective + rotateY flip, keyframe deal) — no Framer Motion needed yet
 - [ ] **Mobile responsive cards (deferred):** on `<sm` screens, stack the spread as a
-  vertical, scrollable list (cards larger, one per row); keep the single-row layout on `≥sm`.
-  Trying to fit 3 cards in one row on narrow phones is too cramped — let mobile scroll instead.
-  (Desktop overlap bug already fixed by switching the scene to normal flex-flow layout.)
+      vertical, scrollable list (cards larger, one per row); keep the single-row layout on `≥sm`.
+      Trying to fit 3 cards in one row on narrow phones is too cramped — let mobile scroll instead.
+      (Desktop overlap bug already fixed by switching the scene to normal flex-flow layout.)
 
 ## Notes
+
 - **Card art: Rider-Waite-Smith (public domain).** Source the 78 card images + a card back.
 - Mock the card data here — real randomization comes from backend in Phase 4.
 - The scene already reserves the lower ~2/3 (empty gloom) for the cards.
 
 ## Superseded (original 3D plan, kept for reference)
+
 - ~~R3F Canvas, top-down camera, PlaneGeometry table, BoxGeometry card meshes,
   @react-three/fiber + drei + @react-spring/three~~ — shelved in favor of 2D.
 
 ## Done when
+
 - Shuffle → deal → flip plays smoothly for a 3-card spread with placeholder cards, in 2D.

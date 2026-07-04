@@ -3,6 +3,7 @@
 Goal: history page, edge cases, mobile, loading states, accessibility.
 
 ## Tasks
+
 - [ ] History page — list past readings with card thumbnails
 - [ ] Reading detail page — revisit a past reading
 - [ ] Shareable reading link (scope per Decision #5)
@@ -13,9 +14,11 @@ Goal: history page, edge cases, mobile, loading states, accessibility.
 - [ ] Both locales fully covered (no missing translation keys)
 
 ## Open Decisions referenced
+
 - #4 Low-end mobile fallback
 - #5 Public readings scope
 
 ## Done when
+
 - History works, errors are handled gracefully, app is usable on mobile and via keyboard,
   and both `en`/`ua` are complete.

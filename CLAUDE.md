@@ -8,7 +8,7 @@ AI tarot reader: the user asks a question, watches a 3-card spread shuffle/deal/
 then can ask the AI to interpret it. Turborepo monorepo: `apps/web` (Next.js), `apps/api`
 (NestJS), `packages/types` (shared TS interfaces). Plan, architecture, and a running session
 log live in `docs/` — `docs/PROGRESS.md` is the source of truth for what actually exists
-(newest entry first); `docs/DECISIONS.md` records *why* (and what superseded earlier plans).
+(newest entry first); `docs/DECISIONS.md` records _why_ (and what superseded earlier plans).
 
 ## Commands
 
@@ -54,14 +54,33 @@ This is the core architecture and it is deliberately split:
    orientation, returns `ReadingCard[]`. **The question is not sent here and is not used** —
    it's validated/held client-side only. The draw is the free "hook".
 2. **Interpret** — `POST /api/readings/interpret { question, locale, spreadType, cards }`,
-   streamed back as **plain text** (not SSE/JSON). The client sends only card *refs*
-   (`cardId`, `positionName`, `isReversed`); the backend re-fetches authoritative meanings
-   from the DB so the model never reads client-supplied meaning text. This is the on-demand
-   "Interpret with AI" step.
+   streamed back as **plain text** (not SSE/JSON). **Requires a signed-in user** (JWT bearer,
+   see below). The client sends only card _refs_ (`cardId`, `positionName`, `isReversed`);
+   the backend re-fetches authoritative meanings from the DB so the model never reads
+   client-supplied meaning text. This is the on-demand "Interpret with AI" step.
 
 Frontend orchestration lives in `apps/web/src/components/reading/ReadingFlow.tsx` (the one
 client island; `page.tsx` stays a server component). The streaming client is
 `apps/web/src/lib/api.ts` (`drawReading`, `interpretReading` with an `onDelta` callback).
+
+## Auth: email + password, JWT bearer, no passport
+
+`apps/api/src/modules/auth/` — `POST /auth/register`, `POST /auth/login`, `GET /auth/me`,
+`PATCH /auth/profile`. bcryptjs-hashed passwords in a `users` table; stateless 7-day HS256
+token signed with `JWT_SECRET` (read lazily — missing secret only 503s when auth is used).
+`JwtAuthGuard` is a plain Nest guard (no passport) and gates only `/readings/interpret` —
+the draw is the free teaser (Decision #11/#21). On the web, `AuthProvider` keeps the token
+in localStorage (`tarot-ai.token`, restored via `/auth/me`); a guest clicking "Interpret
+with AI" gets the fantasy-styled `AuthModal`, and the interpretation resumes automatically
+after sign-in.
+
+The seeker's voluntary profile (birth date, gender, about, occupation, relationship status,
+focus areas — flat nullable columns on `users`, nested as `user.profile` in the API) is
+edited in `ProfileModal` (opened by clicking your name in the corner chip) and personalizes
+the AI reading: `modules/readings/seeker-context.ts` turns it into an "About the seeker"
+prompt block, deriving age, zodiac sign, and the tarot birth card from the birth date. The
+enum value lists (`GENDERS`, `FOCUS_AREAS`, …) live in `@tarot-ai/types` and are shared by
+API validation and the web form.
 
 ## AI: Google Gemini via the Vercel AI SDK
 
@@ -104,6 +123,7 @@ preview URLs).
 ## Note on docs vs. code
 
 `docs/ARCHITECTURE.md` describes the original plan; several pieces have not been built or were
-superseded — there is currently **no i18n/next-intl** wiring, **no auth/users**, **no React
-Three Fiber 3D scene**, and the AI is Gemini, not Claude. Trust the code and `docs/PROGRESS.md`
-over the aspirational sections of `ARCHITECTURE.md`.
+superseded — there is currently **no i18n/next-intl** wiring, **no OAuth** (auth is email +
+password only — no Google/Apple), **no React Three Fiber 3D scene**, and the AI is Gemini,
+not Claude. Trust the code and `docs/PROGRESS.md` over the aspirational sections of
+`ARCHITECTURE.md`.

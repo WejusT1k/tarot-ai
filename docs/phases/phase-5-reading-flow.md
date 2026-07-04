@@ -3,6 +3,7 @@
 Goal: full user journey works end-to-end (frontend ↔ backend ↔ AI).
 
 ## Tasks
+
 - [ ] Frontend calls POST /readings after question submit (sends question + locale)
 - [ ] 3D shuffle animation plays while API processes
 - [ ] Cards received → deal animation plays
@@ -15,12 +16,14 @@ Goal: full user journey works end-to-end (frontend ↔ backend ↔ AI).
 - [ ] "Ask another question" reset flow
 
 ## Notes
+
 - This is where Phase 1–4 pieces connect. No new infrastructure — wiring + UX timing.
 - Tune animation timing so shuffle covers API latency; deal triggers on response.
 - Teaser flow: guest sees the full shuffle/deal/flip spectacle, then the modal. The
   delivered magic motivates the signup. Preserve the in-progress reading across login.
 
 ## Done when
+
 - A guest asks a question, watches cards deal, hits the login/register modal, signs in,
   and the interpretation reveals — all in their selected language.
 - An authed user gets the full flow uninterrupted, with save / ask-again.

@@ -1,0 +1,278 @@
+@reference '../../app/globals.css';
+
+/* Shares the AuthModal's velvet-panel dressing, sized for a longer form. */
+
+.overlay {
+  @apply fixed inset-0 z-50;
+
+  background: rgba(5, 4, 9, 0.72);
+  backdrop-filter: blur(4px);
+  animation: overlayIn 300ms ease both;
+}
+
+.content {
+  @apply fixed top-1/2 left-1/2 z-50 w-[min(92vw,32rem)] -translate-x-1/2 -translate-y-1/2 outline-none;
+
+  max-height: 92dvh;
+  animation: contentIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.panel {
+  @apply relative flex max-h-[92dvh] flex-col overflow-y-auto rounded-2xl px-7 py-8 sm:px-10;
+
+  color: var(--color-bone);
+  background:
+    radial-gradient(
+      120% 90% at 50% -20%,
+      color-mix(in srgb, var(--color-arcane) 32%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(170deg, var(--color-dusk) 0%, var(--color-night) 90%);
+  border: 1px solid color-mix(in srgb, var(--color-ember) 45%, transparent);
+  box-shadow:
+    inset 0 1px 24px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(204, 142, 72, 0.14),
+    0 30px 70px rgba(0, 0, 0, 0.65);
+  scrollbar-width: thin;
+}
+
+.close {
+  @apply absolute top-3 right-3 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-sm transition-colors;
+
+  color: color-mix(in srgb, var(--color-mist) 70%, transparent);
+  background: color-mix(in srgb, var(--color-felt-rim) 55%, transparent);
+
+  &:hover {
+    color: var(--color-bone);
+    background: color-mix(in srgb, var(--color-felt-rim) 90%, transparent);
+  }
+
+  &:focus-visible {
+    @apply outline-none;
+
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-ember) 70%, transparent);
+  }
+}
+
+.ornament {
+  @apply flex shrink-0 items-center justify-center gap-3;
+
+  color: color-mix(in srgb, var(--color-ember) 80%, transparent);
+}
+
+.ornLine {
+  @apply h-px w-16;
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-ember) 50%, transparent),
+    transparent
+  );
+}
+
+.ornMark {
+  @apply text-sm;
+}
+
+.title {
+  @apply font-display mt-4 text-center text-2xl font-semibold tracking-wide;
+
+  color: var(--color-bone);
+  text-shadow: 0 0 24px rgba(204, 142, 72, 0.3);
+}
+
+.blurb {
+  @apply mx-auto mt-2 mb-6 max-w-[24rem] text-center font-sans text-sm italic leading-relaxed;
+
+  color: color-mix(in srgb, var(--color-mist) 80%, transparent);
+}
+
+.form {
+  @apply flex flex-col gap-4;
+}
+
+/* Two shorter fields side by side (stacked on narrow screens). */
+.row {
+  @apply grid gap-4 sm:grid-cols-2;
+}
+
+.field {
+  @apply flex flex-col gap-1.5;
+}
+
+.label {
+  @apply font-display pl-4 text-[0.65rem] uppercase tracking-[0.35em];
+
+  color: color-mix(in srgb, var(--color-ember-soft) 140%, var(--color-mist));
+}
+
+.input {
+  @apply w-full rounded-full px-5 py-3 font-sans text-base outline-none transition-all duration-300;
+
+  color: var(--color-bone);
+  background: color-mix(in srgb, var(--color-night) 65%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-ember) 30%, transparent);
+  box-shadow: inset 0 1px 14px rgba(0, 0, 0, 0.55);
+  /* Native date-picker chrome follows the dark theme. */
+  color-scheme: dark;
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-mist) 45%, transparent);
+  }
+
+  &:focus {
+    border-color: color-mix(in srgb, var(--color-ember) 65%, transparent);
+    box-shadow:
+      inset 0 1px 14px rgba(0, 0, 0, 0.55),
+      0 0 22px rgba(204, 142, 72, 0.18);
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed opacity-70;
+  }
+}
+
+/* Softer corners than the pill inputs — it's a scroll, not a slit. */
+.textarea {
+  @apply w-full resize-none rounded-2xl px-5 py-3 font-sans text-base outline-none transition-all duration-300;
+
+  color: var(--color-bone);
+  background: color-mix(in srgb, var(--color-night) 65%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-ember) 30%, transparent);
+  box-shadow: inset 0 1px 14px rgba(0, 0, 0, 0.55);
+  scrollbar-width: thin;
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-mist) 45%, transparent);
+  }
+
+  &:focus {
+    border-color: color-mix(in srgb, var(--color-ember) 65%, transparent);
+    box-shadow:
+      inset 0 1px 14px rgba(0, 0, 0, 0.55),
+      0 0 22px rgba(204, 142, 72, 0.18);
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed opacity-70;
+  }
+}
+
+.chips {
+  @apply flex flex-wrap gap-2 pl-1;
+}
+
+/* Toggleable rune-chip; lights up gold when chosen. */
+.chip {
+  @apply inline-flex cursor-pointer items-center rounded-full px-4 py-2 font-display text-[0.65rem] uppercase tracking-[0.2em] leading-none transition-all duration-300;
+
+  color: color-mix(in srgb, var(--color-mist) 80%, transparent);
+  background: color-mix(in srgb, var(--color-night) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-mist) 25%, transparent);
+
+  &:hover:not(:disabled) {
+    color: var(--color-bone);
+    border-color: color-mix(in srgb, var(--color-ember) 50%, transparent);
+  }
+
+  &:focus-visible {
+    @apply outline-none;
+
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-ember) 60%, transparent);
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+}
+
+.chipOn {
+  color: var(--color-bone);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--color-ember) 35%, var(--color-felt)) 0%,
+    color-mix(in srgb, var(--color-felt) 85%, var(--color-night)) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-ember) 70%, transparent);
+  box-shadow: 0 0 16px rgba(204, 142, 72, 0.25);
+}
+
+.submit {
+  @apply mt-2 inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full px-9 py-3.5 font-display text-sm uppercase tracking-[0.3em] leading-none transition-all duration-300;
+
+  color: var(--color-bone);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--color-ember) 40%, var(--color-felt)) 0%,
+    color-mix(in srgb, var(--color-felt) 85%, var(--color-night)) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--color-ember) 55%, transparent);
+  box-shadow:
+    inset 0 1px 12px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(204, 142, 72, 0.15);
+
+  &:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--color-ember) 80%, transparent);
+    box-shadow:
+      inset 0 1px 12px rgba(0, 0, 0, 0.5),
+      0 0 34px rgba(204, 142, 72, 0.4);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    @apply outline-none;
+
+    box-shadow:
+      inset 0 1px 12px rgba(0, 0, 0, 0.5),
+      0 0 0 2px color-mix(in srgb, var(--color-ember) 70%, transparent);
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed opacity-80;
+  }
+}
+
+.spinner {
+  @apply h-4 w-4 rounded-full;
+
+  border: 2px solid color-mix(in srgb, var(--color-bone) 25%, transparent);
+  border-top-color: var(--color-bone);
+  animation: spin 700ms linear infinite;
+}
+
+.error {
+  @apply text-center font-sans text-sm tracking-wide;
+
+  color: color-mix(in srgb, #e0a4a4 80%, var(--color-mist));
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes contentIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.96);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .content {
+    animation: none;
+  }
+
+  .spinner {
+    animation-duration: 1400ms;
+  }
+}

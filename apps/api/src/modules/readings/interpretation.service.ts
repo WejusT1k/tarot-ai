@@ -9,7 +9,8 @@ import {
 } from '@ai-sdk/google';
 import { streamText } from 'ai';
 import type { ServerResponse } from 'node:http';
-import type { Card, Locale, SpreadType } from '@tarot-ai/types';
+import type { Card, Locale, SpreadType, User } from '@tarot-ai/types';
+import { describeSeeker } from './seeker-context';
 
 /** One card resolved with its full reference data + how it landed in the spread. */
 export interface InterpretCardContext {
@@ -23,6 +24,8 @@ export interface InterpretInput {
   locale: Locale;
   spreadType: SpreadType;
   cards: InterpretCardContext[];
+  /** The signed-in seeker — their voluntary profile personalizes the reading. */
+  seeker: User | null;
 }
 
 /** Human-readable language name fed to the model so it answers in the seeker's tongue. */
@@ -107,6 +110,11 @@ export class InterpretationService {
       'Plain prose only — no lists, no headings, no markdown, no emoji. Do not',
       'invent cards beyond those given. Cut any sentence that does not add real',
       'meaning — if it sounds like filler, delete it.',
+      '',
+      'If background about the seeker is provided (age, sign, work, situation),',
+      'let it quietly sharpen the reading — tie card meanings to their actual',
+      'life instead of speaking in generalities. Never recite the profile back,',
+      'never mention that you have it, and never use it to flatter.',
     ].join('\n');
   }
 
@@ -125,9 +133,12 @@ export class InterpretationService {
       })
       .join('\n');
 
+    const seeker = input.seeker ? describeSeeker(input.seeker) : null;
+
     return [
       `The seeker asks: "${input.question}"`,
       '',
+      ...(seeker ? [seeker, ''] : []),
       `Spread: ${SPREAD_NAME[input.spreadType]}.`,
       'Cards drawn:',
       cards,
